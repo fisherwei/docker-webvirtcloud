@@ -1,8 +1,5 @@
-# docker build -t mplx/webvirtcloud .
+# fork from mplx/docker-webvirtcloud
 FROM phusion/baseimage:0.11
-
-LABEL maintainer="geki007"
-LABEL maintainer="mplx <mplx+docker@donotreply.at>"
 
 EXPOSE 80
 
@@ -27,12 +24,7 @@ RUN apt-get update -qqy && \
 
 WORKDIR /srv
 
-ENV COMMITID=a9a2e1167bfae652186e905d6b226c75022b45e9
-
-RUN curl -L -o $COMMITID.zip https://github.com/retspen/webvirtcloud/archive/$COMMITID.zip && \
-    unzip $COMMITID.zip && \
-    rm -f $COMMITID.zip && \
-    mv webvirtcloud-$COMMITID webvirtcloud && \
+RUN git clone https://github.com/retspen/webvirtcloud.git && \
     rm -Rf webvirtcloud/doc/ webvirtcloud/Vagrantfile && \
     cp webvirtcloud/conf/supervisor/webvirtcloud.conf /etc/supervisor/conf.d && \
     cp webvirtcloud/conf/nginx/webvirtcloud.conf /etc/nginx/conf.d && \
